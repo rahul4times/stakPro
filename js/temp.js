@@ -32,28 +32,13 @@ $(document).ready(function() {
 
 
 
+// temp test starts here
 
 
-  // Click event
   searchBtn.addEventListener('click', function() {
 
     //onClick scrolling page to result
     window.scrollBy(0, 700);
-    stakProRequest();
-
-  }); // Click event ends here
-
-  // Keypress event on Enter Key starts here
-  $(document).keypress(function(e) {
-    if (e.which == 13) {
-      //onClick scrolling page to result
-      window.scrollBy(0, 700);
-      stakProRequest();
-    }
-  }); // Keypress event on Enter Key ends here
-
-  // Function stakProRequest() starts here
-  function stakProRequest() {
 
     // API call for logo starts here
     $.get(link + symbol.value + logo, function(data) {
@@ -429,7 +414,6 @@ $(document).ready(function() {
 
     }); // Delayed Quote API call ends here
 
-  } // Function stakProRequest() ends here
-
+  }); // Search Button click event ends here
 
 }); // jQuery ends here
