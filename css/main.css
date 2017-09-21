@@ -130,9 +130,6 @@ a:hover{
   color: #000;
 }
 
-
-
-
 #logo-box{
   width: 100%;
   background-color: #fff;
@@ -166,6 +163,10 @@ tr{
   width: 80%;
   font-size: 15px;
   font-weight: lighter;
+}
+hr{
+  border-top: 3px double #00ADC0;
+
 }
 
 
