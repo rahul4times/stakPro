@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
   var symbol = document.getElementById('inputBox');
-  symbol.focus();
+  symbol.focus(); // onload focus on inputBox
 
   var searchBtn = document.getElementById('searchBtn');
   var imgDiv = document.getElementById('companyLogo');
