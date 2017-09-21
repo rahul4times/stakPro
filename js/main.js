@@ -31,9 +31,6 @@ $(document).ready(function() {
   var delayedQuote = '/delayed-quote';
 
 
-
-
-
   // Click event
   searchBtn.addEventListener('click', function() {
 
@@ -428,6 +425,78 @@ $(document).ready(function() {
       delayedQuoteDiv.appendChild(delayedQuoteTable);
 
     }); // Delayed Quote API call ends here
+
+
+    // ------------------- Chart Starts Here ---------------------------  //
+
+    // Storing dates in array
+    var dateArray = [
+      '2017-08-31', '2017-09-01', '2017-09-05', '2017-09-06', '2017-09-07',
+      '2017-09-08', '2017-09-11', '2017-09-12', '2017-09-13', '2017-09-14',
+      '2017-09-15', '2017-09-18', '2017-09-19', '2017-09-20'
+    ];
+
+    // API call for charts start here
+    var timeArray = [];
+    $.get(link + symbol.value + chart, function(chartInfo){
+
+      for(let i=0; i<chartInfo.length; i++){
+
+        for(let j = 0; j<dateArray.length; j++){
+          if(chartInfo[i].date === dateArray[j]){
+            timeArray.push(chartInfo[i].open);
+
+          }
+        }
+
+
+      }
+
+
+
+
+    });
+    // API call for charts end here
+
+    console.log(timeArray);
+
+    // Load the Visualization API and the corechart package.
+        google.charts.load('current', {'packages':['corechart']});
+
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(drawChart);
+
+        // Callback that creates and populates a data table,
+        // instantiates the pie chart, passes in the data and
+        // draws it.
+        function drawChart() {
+
+          // Create the data table.
+          var data = new google.visualization.DataTable();
+          data.addColumn('string', 'Topping');
+          data.addColumn('number', 'Slices');
+          data.addRows([
+            ['Mushrooms', 3],
+            ['Onions', 1],
+            ['Olives', 1],
+            ['Zucchini', 1],
+            ['Pepperoni', 2]
+          ]);
+
+          // Set chart options
+          var options = {'title':'How Much Pizza I Ate Last Night',
+                         'width':500,
+                         'height':500};
+
+          // Instantiate and draw our chart, passing in some options.
+          var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+          chart.draw(data, options);
+        }
+
+    // Chart ends here
+
+
+
 
   } // Function stakProRequest() ends here
 
