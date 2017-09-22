@@ -24,10 +24,6 @@ $(document).ready(function() {
 
   // Eastern Time Clock Ends here
 
-  var marketOpen = document.getElementById('easternClock');
-
-
-
 
 
   var symbol = document.getElementById('inputBox');
@@ -65,7 +61,7 @@ $(document).ready(function() {
   // Click event on search button
   searchBtn.addEventListener('click', function() {
     //onClick scrolling page to result
-    window.scrollBy(0, 900);
+    window.scrollBy(0, 700);
     stakProRequest();
 
   }); // Click event ends here
@@ -74,10 +70,64 @@ $(document).ready(function() {
   $(document).keypress(function(e) {
     if (e.which == 13) {
       //onClick scrolling page to result
-      window.scrollBy(0, 900);
+      window.scrollBy(0, 700);
       stakProRequest();
     }
   }); // Keypress event on Enter Key ends here
+
+
+
+  // ----------- Top Gainer API call Starts Here ----------------- //
+
+  var topGainerLink = "https://api.iextrading.com/1.0/stock/market/list/gainers";
+
+
+  var topGainerDiv = document.getElementById('topGainer');
+  var topGainerPara = document.createElement('p');
+
+
+  // Auto refresh function starts here
+    setInterval(function() {
+      $.get(topGainerLink, function(topGainerLinkInfo) {
+        $(topGainerPara).empty();
+        for (let i = 0; i < topGainerLinkInfo.length; i++) {
+          topGainerPara.innerHTML += "(" + topGainerLinkInfo[i].symbol +  ") " +
+          topGainerLinkInfo[i].companyName + " | ";
+        }
+        topGainerDiv.appendChild(topGainerPara);
+
+      }); // API call for top Gainers end here
+
+    }, 2000);
+  // Auto refresh function starts here
+
+// ----------- Top Gainer API call ends here ----------------- //
+
+// ----------- Top Loosers API call Starts Here ----------------- //
+
+var topLooserLink = "https://api.iextrading.com/1.0/stock/market/list/losers";
+
+var topLooserDiv = document.getElementById('topLooser');
+var topLooserPara = document.createElement('p');
+
+
+// Auto refresh function starts here
+  setInterval(function() {
+    $.get(topLooserLink, function(topLooserLinkInfo) {
+      $(topLooserPara).empty();
+      for (let i = 0; i < topLooserLinkInfo.length; i++) {
+        topLooserPara.innerHTML += "(" + topLooserLinkInfo[i].symbol +  ") " +
+        topLooserLinkInfo[i].companyName + " | ";
+      }
+      topLooserDiv.appendChild(topLooserPara);
+
+    }); // API call for top Gainers end here
+
+  }, 2000);
+// Auto refresh function ends here
+
+// ----------- Top Loosers API call ends here ----------------- //
+
 
   // Function stakProRequest() starts here. This is main function
   function stakProRequest() {
@@ -457,40 +507,8 @@ $(document).ready(function() {
     }); // Delayed Quote API call ends here
 
 
-    // ------------------- Chart Starts Here ---------------------------  //
-
-    // Storing dates in array
-    var dateArray = [
-      '2017-08-31', '2017-09-01', '2017-09-05', '2017-09-06', '2017-09-07',
-      '2017-09-08', '2017-09-11', '2017-09-12', '2017-09-13', '2017-09-14',
-      '2017-09-15', '2017-09-18', '2017-09-19', '2017-09-20'
-    ];
-
-    // API call for charts start here
-    let timeArray = [];
-    $.get(link + symbol.value + chart, function(chartInfo) {
-
-      for (let i = 0; i < chartInfo.length; i++) {
-
-        for (let j = 0; j < dateArray.length; j++) {
-          if (chartInfo[i].date === dateArray[j]) {
-            timeArray.push(chartInfo[i].open);
-          }
-        }
-      }
-    });
-    // API call for charts end here
-
-    //console.log(timeArray);
-
-    // Chart starts here
-
-    // Chart ends here
-
-
 
 
   } // Function stakProRequest() ends here
-
 
 }); // jQuery ends here
