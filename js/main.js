@@ -1,7 +1,38 @@
 $(document).ready(function() {
 
+  // Eastern Time Clock Starts Here
+  function convertToServerTimeZone() {
+    //EST
+    offset = -4.0
+    //offset = -5.0  // Day light saving time
+    clientDate = new Date();
+    utc = clientDate.getTime() + (clientDate.getTimezoneOffset() * 60000);
+    serverDate = new Date(utc + (3600000 * offset));
+    document.getElementById("easternClock").innerHTML = serverDate.toLocaleString();
+
+
+    if (clientDate.getHours() > 6 && clientDate.getHours() < 13) {
+      document.getElementById('marketStatus').innerHTML = "Market is open";
+    } else {
+      document.getElementById('marketStatus').innerHTML = "Market is close";
+    }
+
+
+  }
+
+  setInterval(convertToServerTimeZone, 1000);
+
+  // Eastern Time Clock Ends here
+
+  var marketOpen = document.getElementById('easternClock');
+
+
+
+
+
   var symbol = document.getElementById('inputBox');
-  symbol.focus(); // onload focus on inputBox
+  // onload focus on inputBox
+  symbol.focus();
 
   var searchBtn = document.getElementById('searchBtn');
   var imgDiv = document.getElementById('companyLogo');
@@ -17,7 +48,7 @@ $(document).ready(function() {
 
 
 
-  // API request starts here
+  // API links starts here
   var link = "https://api.iextrading.com/1.0/stock/";
   var logo = '/logo';
   var price = '/price'
@@ -31,11 +62,10 @@ $(document).ready(function() {
   var delayedQuote = '/delayed-quote';
 
 
-  // Click event
+  // Click event on search button
   searchBtn.addEventListener('click', function() {
-
     //onClick scrolling page to result
-    window.scrollBy(0, 700);
+    window.scrollBy(0, 900);
     stakProRequest();
 
   }); // Click event ends here
@@ -44,12 +74,12 @@ $(document).ready(function() {
   $(document).keypress(function(e) {
     if (e.which == 13) {
       //onClick scrolling page to result
-      window.scrollBy(0, 700);
+      window.scrollBy(0, 900);
       stakProRequest();
     }
   }); // Keypress event on Enter Key ends here
 
-  // Function stakProRequest() starts here
+  // Function stakProRequest() starts here. This is main function
   function stakProRequest() {
 
     // API call for logo starts here
@@ -437,61 +467,23 @@ $(document).ready(function() {
     ];
 
     // API call for charts start here
-    var timeArray = [];
-    $.get(link + symbol.value + chart, function(chartInfo){
+    let timeArray = [];
+    $.get(link + symbol.value + chart, function(chartInfo) {
 
-      for(let i=0; i<chartInfo.length; i++){
+      for (let i = 0; i < chartInfo.length; i++) {
 
-        for(let j = 0; j<dateArray.length; j++){
-          if(chartInfo[i].date === dateArray[j]){
+        for (let j = 0; j < dateArray.length; j++) {
+          if (chartInfo[i].date === dateArray[j]) {
             timeArray.push(chartInfo[i].open);
-
           }
         }
-
-
       }
-
-
-
-
     });
     // API call for charts end here
 
-    console.log(timeArray);
+    //console.log(timeArray);
 
-    // Load the Visualization API and the corechart package.
-        google.charts.load('current', {'packages':['corechart']});
-
-        // Set a callback to run when the Google Visualization API is loaded.
-        google.charts.setOnLoadCallback(drawChart);
-
-        // Callback that creates and populates a data table,
-        // instantiates the pie chart, passes in the data and
-        // draws it.
-        function drawChart() {
-
-          // Create the data table.
-          var data = new google.visualization.DataTable();
-          data.addColumn('string', 'Topping');
-          data.addColumn('number', 'Slices');
-          data.addRows([
-            ['Mushrooms', 3],
-            ['Onions', 1],
-            ['Olives', 1],
-            ['Zucchini', 1],
-            ['Pepperoni', 2]
-          ]);
-
-          // Set chart options
-          var options = {'title':'How Much Pizza I Ate Last Night',
-                         'width':500,
-                         'height':500};
-
-          // Instantiate and draw our chart, passing in some options.
-          var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-          chart.draw(data, options);
-        }
+    // Chart starts here
 
     // Chart ends here
 

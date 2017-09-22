@@ -172,6 +172,15 @@ hr{
   border-top: 3px double #00ADC0;
 }
 
+#easternClock{
+  color: #000;
+  font-family: arial;
+  font-size: 16px;
+  font-weight: lighter;
+}
+
+
+
 
 
 /* Media Quiries*/
